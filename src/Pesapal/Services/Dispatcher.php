@@ -7,8 +7,13 @@
  */
 
 namespace Pesapal\Services;
+
 use BigName\EventDispatcher\Dispatcher as BigNameDispatcher;
 
-class Dispatcher extends BigNameDispatcher{
+class Dispatcher extends BigNameDispatcher
+{
+use SingletonMake;
 
-} 
+
+
+}

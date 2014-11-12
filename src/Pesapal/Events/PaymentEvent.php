@@ -21,6 +21,7 @@ class PaymentEvent extends IsAPaymentEvent
     function __construct(Payment $payment)
     {
         $this->payment = $payment;
+
     }
 
     /**
@@ -38,6 +39,6 @@ class PaymentEvent extends IsAPaymentEvent
 
     public function getName()
     {
-        return "Payment Event";
+        return self::class;
     }
 }
