@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pesapal\Contracts\PaymentListener;
 
-class PaymentListenerSpec extends ObjectBehavior
+class PaymentStatusDispatcherSpec extends ObjectBehavior
 {
     function let(PaymentListener $promise)
     {
@@ -17,9 +17,8 @@ class PaymentListenerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pesapal\Listeners\PaymentListener');
+        $this->shouldHaveType('Pesapal\Listeners\PaymentStatusDispatcher');
     }
-
     function it_checks_status(IsAPaymentEvent $event)
     {
         $event->getStatus()->willReturn("paid");
