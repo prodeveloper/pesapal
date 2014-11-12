@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Faker\Factory;
 
-class PaymentProgressUpdateSpec extends ObjectBehavior
+class PaymentEventSpec extends ObjectBehavior
 {
     function let(){
         $faker= Factory::create();
@@ -31,6 +31,6 @@ class PaymentProgressUpdateSpec extends ObjectBehavior
     }
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pesapal\Events\PaymentProgressUpdate');
+        $this->shouldHaveType('Pesapal\Events\PaymentEvent');
     }
 }

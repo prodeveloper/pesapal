@@ -9,16 +9,13 @@
 namespace Pesapal\Listeners;
 use BigName\EventDispatcher\Event;
 use BigName\EventDispatcher\Listener;
+use Pesapal\Events\IsAPaymentEvent;
 use Pesapal\Events\PaymentEvent;
 use Pesapal\Contracts\PaymentPromise;
 class PaymentListener implements  Listener
 {
     protected $payment;
     protected $promise;
-    /**
-     * @var PaymentEvent
-     */
-    protected $event;
 
     function __construct(PaymentPromise $promise)
     {
@@ -26,36 +23,35 @@ class PaymentListener implements  Listener
     }
 
     /**
-     * @param PaymentEvent $event
+     * @param IsAPaymentEvent $event
      */
     public function handle(Event $event)
     {
-        $this->event=$event;
-        return $this;
-
-
-    }
-
-    function whenSuccessfullPayment(){
+        $this->whenSuccessfulPayment($event);
+        $this->whenPaymentFailed($event);
+        $this->whenProgressUpdate($event);
 
     }
-    function whenPaymentFailed(){
 
+    function whenSuccessfulPayment(IsAPaymentEvent $event){
+        if($this->isEventStatus($event,"paid")){
+            $this->promise->paid();
+        }
     }
-    function whenProgressUpdate(PaymentEvent $event){
+    function whenPaymentFailed(IsAPaymentEvent $event){
+        if($this->isEventStatus($event,"failed")){
+            $this->promise->failed();
+        }
+    }
+    function whenProgressUpdate(IsAPaymentEvent $event){
+        if($this->isEventStatus($event,"progress")){
+            $this->promise->inProgress();
+        }
+    }
+    function isEventStatus(IsAPaymentEvent $event,$status){
+        return $event->getStatus()==$status;
+    }
 
-    }
-    function isEventStatus($status){
-        return $this->_getPaymentStatus($this->event) ==$status;
-    }
-    /**
-     * @param Event $event
-     * @return mixed
-     */
-    protected function _getPaymentStatus(Event $event)
-    {
-        return $event->getPayment()->status;
-    }
 
 
 }

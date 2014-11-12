@@ -11,4 +11,10 @@ namespace Pesapal\Events;
 
 interface IsAPaymentEvent {
 
+    /**
+     * @return Payment
+     */
+    public function getPayment();
+
+    public function getStatus();
 } 

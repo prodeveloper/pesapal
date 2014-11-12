@@ -11,7 +11,7 @@ namespace Pesapal\Events;
 use BigName\EventDispatcher\Event;
 use Pesapal\Entities\Payment;
 
-class PaymentEvent implements Event
+class PaymentEvent implements Event, IsAPaymentEvent
 {
     /**
      * @var Payment
@@ -26,9 +26,14 @@ class PaymentEvent implements Event
     /**
      * @return Payment
      */
-     public function getPayment()
+    public function getPayment()
     {
         return $this->payment;
+    }
+
+    public function getStatus()
+    {
+        return $this->payment->status;
     }
 
     public function getName()
