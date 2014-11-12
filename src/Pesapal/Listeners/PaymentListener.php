@@ -19,8 +19,17 @@ class PaymentListener implements  Listener
 
     function __construct(PaymentPromise $promise)
     {
+       $this->setPromise($promise);
+    }
+
+    /**
+     * @param PaymentPromise $promise
+     */
+    public function setPromise(PaymentPromise $promise)
+    {
         $this->promise = $promise;
     }
+
 
     /**
      * @param IsAPaymentEvent $event
@@ -32,6 +41,7 @@ class PaymentListener implements  Listener
         $this->whenProgressUpdate($event);
 
     }
+
 
     function whenSuccessfulPayment(IsAPaymentEvent $event){
         if($this->isEventStatus($event,"paid")){
@@ -51,6 +61,14 @@ class PaymentListener implements  Listener
     function isEventStatus(IsAPaymentEvent $event,$status){
         return $event->getStatus()==$status;
     }
+    /**
+     * @return PaymentPromise
+     */
+    public function getPromise()
+    {
+        return $this->promise;
+    }
+
 
 
 

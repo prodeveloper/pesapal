@@ -11,7 +11,7 @@ namespace Pesapal\Events;
 use BigName\EventDispatcher\Event;
 use Pesapal\Entities\Payment;
 
-class PaymentEvent implements Event, IsAPaymentEvent
+class PaymentEvent extends IsAPaymentEvent
 {
     /**
      * @var Payment

@@ -9,12 +9,14 @@
 namespace Pesapal\Events;
 
 
-interface IsAPaymentEvent {
+use BigName\EventDispatcher\Event;
+
+abstract class IsAPaymentEvent implements Event {
 
     /**
      * @return Payment
      */
-    public function getPayment();
+    abstract public function getPayment();
 
-    public function getStatus();
+    abstract public function getStatus();
 } 
