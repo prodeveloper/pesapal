@@ -1,0 +1,5 @@
+# Created by .gitignore support plugin (hsz.mobi)
+### Laravel4 template
+vendor
+composer.lock
+.idea
