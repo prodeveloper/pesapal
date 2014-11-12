@@ -8,7 +8,7 @@
 
 namespace Pesapal\Services;
 use Pesapal\Events\PaymentEvent;
-use Pesapal\Listeners\PaymentListener;
+use Pesapal\Listeners\PaymentStatusDispatcher;
 use Pesapal\Services\Dispatcher;
 use Pesapal\Services\SingletonMake;
 
@@ -18,7 +18,7 @@ class PaymentBroadcast
 
     function addListener($listener)
     {
-        $listener = new PaymentListener($listener);
+        $listener = new PaymentStatusDispatcher($listener);
 
         Dispatcher::make()->addListener(PaymentEvent::class, $listener);
 

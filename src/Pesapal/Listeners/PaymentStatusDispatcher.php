@@ -11,21 +11,21 @@ use BigName\EventDispatcher\Event;
 use BigName\EventDispatcher\Listener;
 use Pesapal\Events\IsAPaymentEvent;
 use Pesapal\Events\PaymentEvent;
-use Pesapal\Contracts\PaymentPromise;
-class PaymentListener implements  Listener
+use Pesapal\Contracts\PaymentListener;
+class PaymentStatusDispatcher implements  Listener
 {
     protected $payment;
     protected $promise;
 
-    function __construct(PaymentPromise $promise)
+    function __construct(PaymentListener $promise)
     {
        $this->setPromise($promise);
     }
 
     /**
-     * @param PaymentPromise $promise
+     * @param PaymentListener $promise
      */
-    public function setPromise(PaymentPromise $promise)
+    public function setPromise(PaymentListener $promise)
     {
         $this->promise = $promise;
     }
@@ -62,7 +62,7 @@ class PaymentListener implements  Listener
         return $event->getStatus()==$status;
     }
     /**
-     * @return PaymentPromise
+     * @return PaymentListener
      */
     public function getPromise()
     {

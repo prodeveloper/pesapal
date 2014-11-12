@@ -24,8 +24,8 @@ $order= new Order(
 
 );
 //On client side
-$promise= new SendThankYouEmail;
-PaymentBroadcast::make()->addListener($promise);;
+$listener= new SendThankYouEmail;
+PaymentBroadcast::make()->addListener($listener);
 
 //On engine
 $payment=new Pesapal\Entities\Payment($order,"failed");

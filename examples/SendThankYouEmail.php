@@ -7,7 +7,7 @@
  * Time: 16:05
  */
 
-class SendThankYouEmail implements \Pesapal\Contracts\PaymentPromise {
+class SendThankYouEmail implements \Pesapal\Contracts\PaymentListener {
 
     public function paid()
     {

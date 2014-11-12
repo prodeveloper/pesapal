@@ -5,11 +5,11 @@ namespace spec\Pesapal\Listeners;
 use Pesapal\Events\IsAPaymentEvent;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Pesapal\Contracts\PaymentPromise;
+use Pesapal\Contracts\PaymentListener;
 
 class PaymentListenerSpec extends ObjectBehavior
 {
-    function let(PaymentPromise $promise)
+    function let(PaymentListener $promise)
     {
 
         $this->beConstructedWith($promise);
@@ -26,7 +26,7 @@ class PaymentListenerSpec extends ObjectBehavior
         $this->isEventStatus($event, "paid")->shouldReturn(true);
     }
 
-    function it_calls_paid_promise(IsAPaymentEvent $event, PaymentPromise $promise)
+    function it_calls_paid_promise(IsAPaymentEvent $event, PaymentListener $promise)
     {
         $event->getStatus()->willReturn("paid");
         $this->setPromise($promise);
@@ -34,14 +34,14 @@ class PaymentListenerSpec extends ObjectBehavior
         $promise->paid()->shouldBeCalled();
     }
 
-    function it_calls_failed_promise(IsAPaymentEvent $event, PaymentPromise $promise){
+    function it_calls_failed_promise(IsAPaymentEvent $event, PaymentListener $promise){
         $event->getStatus()->willReturn("failed");
         $this->setPromise($promise);
         $this->handle($event);
         $promise->failed()->shouldBeCalled();
     }
 
-    function it_calls_progress_promise(IsAPaymentEvent $event, PaymentPromise $promise){
+    function it_calls_progress_promise(IsAPaymentEvent $event, PaymentListener $promise){
         $event->getStatus()->willReturn("progress");
         $this->setPromise($promise);
         $this->handle($event);

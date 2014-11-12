@@ -9,7 +9,7 @@
 namespace Pesapal\Contracts;
 
 
-interface PaymentPromise
+interface PaymentListener
 {
 
     public function paid();
