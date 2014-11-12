@@ -31,6 +31,9 @@ class PaymentEvent extends IsAPaymentEvent
     {
         return $this->payment;
     }
+    public function getOrder(){
+        return $this->payment->order;
+    }
 
     public function getStatus()
     {
