@@ -1,0 +1,19 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: jacob
+ * Date: 17/11/14
+ * Time: 23:34
+ */
+
+namespace Pesapal\Services;
+
+use Pesapal\Requests\GenerateIframe;
+
+class IframeGenerator
+{
+    function generateIframe(GenerateIframe $command)
+    {
+        
+    }
+} 

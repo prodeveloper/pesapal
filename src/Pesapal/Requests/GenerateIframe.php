@@ -7,12 +7,13 @@
  */
 
 namespace Pesapal\Requests;
+use Pesapal\Entities\Order;
+use LiteCQRS\DefaultCommand;
 
-use Pesapal\Order;
-
-class GenerateIframe
+class GenerateIframe extends DefaultCommand
 {
-    protected $order;
+    public  $order;
+    public $response;
 
     function __construct(Order $order)
     {
