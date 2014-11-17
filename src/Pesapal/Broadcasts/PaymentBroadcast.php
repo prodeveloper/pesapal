@@ -6,7 +6,7 @@
  * Time: 17:47
  */
 
-namespace Pesapal\Services;
+namespace Pesapal\Broadcasts;
 use Pesapal\Events\PaymentEvent;
 use Pesapal\Listeners\PaymentStatusDispatcher;
 use Pesapal\Services\Dispatcher;
@@ -19,7 +19,6 @@ class PaymentBroadcast
     function addListener($listener)
     {
         $listener = new PaymentStatusDispatcher($listener);
-
         Dispatcher::make()->addListener(PaymentEvent::class, $listener);
 
     }

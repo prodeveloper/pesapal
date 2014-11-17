@@ -7,12 +7,11 @@
  */
 
 namespace Pesapal;
-use LiteCQRS\Bus\EventMessageHandlerFactory;
+
 use LiteCQRS\Bus\InMemoryEventMessageBus;
-use LiteCQRS\Bus\SimpleIdentityMap;
-use LiteCQRS\Bus\IdentityMap\EventProviderQueue;
 use LiteCQRS\Bus\DirectCommandBus;
 use Pesapal\Requests\GenerateIframe;
+use Pesapal\Services\Dispatcher;
 
 /**
  * Simpleton class to startup application
@@ -25,6 +24,11 @@ class Bootstrap {
      * @var DirectCommandBus
      */
     protected $commandBus;
+    /**
+     * @var InMemoryEventMessageBus
+     */
+    protected $messageBus;
+
     protected static $bootstrap;
 
     function __construct()
@@ -37,7 +41,6 @@ class Bootstrap {
     }
 
     protected function run(){
-        $messageBus=new InMemoryEventMessageBus();
         $this->commandBus=new DirectCommandBus();
         $this->registerNativeBindings();
 
@@ -49,9 +52,18 @@ class Bootstrap {
     {
         return $this->commandBus;
     }
+    /**
+     *
+     */
+    public function getMessageBus()
+    {
+        return new Dispatcher();
+    }
+
     protected function registerNativeBindings(){
         $service= new \Pesapal\Services\IframeGenerator();
         $this->getCommandBus()->register(GenerateIframe::class,$service);
     }
+
 
 } 

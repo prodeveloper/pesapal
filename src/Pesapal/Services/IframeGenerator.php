@@ -9,11 +9,11 @@
 namespace Pesapal\Services;
 
 use Pesapal\Requests\GenerateIframe;
-
+use Pesapal\Services\OauthNegotiateForIframe;
 class IframeGenerator
 {
     function generateIframe(GenerateIframe $command)
     {
-        
+        (new OauthNegotiateForIframe())->getIframe();
     }
 } 
