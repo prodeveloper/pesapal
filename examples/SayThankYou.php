@@ -3,14 +3,14 @@
  * Created by PhpStorm.
  * User: jacob
  * Date: 18/11/14
- * Time: 00:11
+ * Time: 02:07
  */
 
-class ShowIframe implements \Pesapal\Contracts\IFrameListener {
-
+class SayThankYou implements \Pesapal\Contracts\IFrameListener {
 
     function show($iframe)
     {
-        echo $iframe;
+
+        echo "Thank you";
     }
 }

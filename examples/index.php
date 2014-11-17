@@ -5,6 +5,7 @@ ini_set('display_errors', 1);
 
 require_once __DIR__ . " /../vendor/autoload.php";
 require_once "ShowIframe.php";
+require_once "SayThankYou.php";
 use Pesapal\Requests\GenerateIframe;
 use Pesapal\Broadcasts\IframeBroadcast;
 $bootstrap=new \Pesapal\Bootstrap();;
@@ -24,7 +25,7 @@ $order= new Pesapal\Entities\Order(
 $listener=new ShowIframe();
 
 IframeBroadcast::make()->addListener($listener);
-
+IframeBroadcast::make()->addListener(new SayThankYou());
 $bootstrap->getCommandBus()->handle(new GenerateIframe($order));
 
 

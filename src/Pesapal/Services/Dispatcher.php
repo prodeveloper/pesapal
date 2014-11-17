@@ -14,6 +14,4 @@ class Dispatcher extends BigNameDispatcher
 {
 use SingletonMake;
 
-
-
 }

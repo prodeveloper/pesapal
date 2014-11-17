@@ -64,11 +64,8 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
 
         );
-        $request=new GenerateIframe($order);
         $bootstrap->getCommandBus()->handle(new GenerateIframe($order));
 
-        if(!strpos($request->response,"iframe")){
-           throw new Exception("Invalid response");
-        }
+
     }
 }
