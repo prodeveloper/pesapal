@@ -12,6 +12,7 @@ use Assert\Assertion;
 use Pesapal\Values\Credentials;
 use Pesapal\Values\DemoStatus;
 use Pesapal\Contracts\IFrameListener;
+use Pesapal\Contracts\PaymentListener;
 
 class Config
 {
@@ -36,6 +37,12 @@ class Config
      */
     private $ipn_listeners;
 
+    /**
+     * @param Credentials $credentials
+     * @param DemoStatus $demoStatus
+     * @param array $iframe_listeners
+     * @param array $ipn_listeners
+     */
     function __construct(
         Credentials $credentials,
         DemoStatus $demoStatus,
@@ -47,14 +54,22 @@ class Config
         $this->iframe_listeners = $iframe_listeners;
         $this->ipn_listeners = $ipn_listeners;
         $this->_validateIframeListeners();
+        $this->_validateIpnListeners();
     }
 
     protected function _validateIframeListeners()
     {
-
+        Assertion::notEmpty($this->iframe_listeners);
         foreach ($this->iframe_listeners as $iframe_listener) {
-
             Assertion::isInstanceOf($iframe_listener, IFrameListener::class);
+        }
+    }
+
+    protected function _validateIpnListeners()
+    {
+        Assertion::notEmpty($this->ipn_listeners);
+        foreach ($this->ipn_listeners as $ipn_listener) {
+            Assertion::isInstanceOf($ipn_listener, PaymentListener::class);
         }
     }
 
