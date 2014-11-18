@@ -42,7 +42,7 @@ class ConfigSpec extends ObjectBehavior
         $credentials->beAdoubleOf(Credentials::class);
         $demoStatus->beAdoubleOf(DemoStatus::class);
         $iframe_listeners = [$IFrameListener];
-        $ipn_listeners = [];
+        $ipn_listeners = [new \stdClass()];
         $this->shouldThrow(AssertionFailedException::class)->during('__construct',
             [$credentials, $demoStatus, $iframe_listeners, $ipn_listeners]);
     }
