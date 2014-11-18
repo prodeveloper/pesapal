@@ -18,6 +18,7 @@ class Pesapal
      */
     protected $config;
     protected $bootstrap;
+    protected static $instance;
 
     private function __construct(Config $config)
     {
