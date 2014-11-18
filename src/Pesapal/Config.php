@@ -59,7 +59,6 @@ class Config
 
     protected function _validateIframeListeners()
     {
-        Assertion::notEmpty($this->iframe_listeners);
         foreach ($this->iframe_listeners as $iframe_listener) {
             Assertion::isInstanceOf($iframe_listener, IFrameListener::class);
         }
@@ -67,7 +66,6 @@ class Config
 
     protected function _validateIpnListeners()
     {
-        Assertion::notEmpty($this->ipn_listeners);
         foreach ($this->ipn_listeners as $ipn_listener) {
             Assertion::isInstanceOf($ipn_listener, PaymentListener::class);
         }
