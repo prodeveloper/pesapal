@@ -37,5 +37,15 @@ class ConfigSpec extends ObjectBehavior
         $this->shouldThrow(AssertionFailedException::class)->during('__construct',
             [$credentials, $demoStatus, $iframe_listeners, $ipn_listeners]);
     }
+    function it_does_not_initialize_with_invalid_payment($credentials, $demoStatus, IFrameListener $IFrameListener)
+    {
+        $credentials->beAdoubleOf(Credentials::class);
+        $demoStatus->beAdoubleOf(DemoStatus::class);
+        $iframe_listeners = [$IFrameListener];
+        $ipn_listeners = [];
+        $this->shouldThrow(AssertionFailedException::class)->during('__construct',
+            [$credentials, $demoStatus, $iframe_listeners, $ipn_listeners]);
+    }
+
 
 }
