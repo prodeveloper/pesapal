@@ -5,7 +5,6 @@
  * Date: 18/11/14
  * Time: 10:35
  */
-
 namespace Pesapal;
 use Pesapal\Config;
 use Pesapal\Entities\Order;
@@ -28,6 +27,7 @@ class Pesapal
 
     }
 
+
     static function make(Config $config)
     {
         if (!self::$instance) {
@@ -39,7 +39,7 @@ class Pesapal
 
     function generateIframe(Order $order)
     {
-        $this->bootstrap->getCommandBus()->handle(new GenerateIframe($order));
+        $this->bootstrap->getCommandBus()->handle(new GenerateIframe($order,$this->config));
     }
 
     function ipn($data)

@@ -14,6 +14,6 @@ class IframeGenerator
 {
     function generateIframe(GenerateIframe $command)
     {
-        (new OauthNegotiateForIframe())->getIframe();
+        (new OauthNegotiateForIframe($command->order,$command->config))->getIframe();
     }
 } 

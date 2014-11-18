@@ -7,9 +7,7 @@
  */
 
 namespace Pesapal\Services;
-
-
-use Pesapal\Order;
+use Pesapal\Entities\Order;
 
 class XMLGenerator
 {
