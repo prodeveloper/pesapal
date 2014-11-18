@@ -12,7 +12,7 @@ use Pesapal\Requests\GenerateIframe;
  */
 class FeatureContext implements Context, SnippetAcceptingContext
 {
-    use Pesapal\Dispatcher\RequestDispatcher;
+
 
     /**
      * Initializes context.
