@@ -12,13 +12,16 @@ use LiteCQRS\Bus\InMemoryEventMessageBus;
 use LiteCQRS\Bus\DirectCommandBus;
 use Pesapal\Requests\GenerateIframe;
 use Pesapal\Services\Dispatcher;
+use Pesapal\Broadcasts\PaymentBroadcast;
+use Pesapal\Broadcasts\IframeBroadcast;
 
 /**
  * Simpleton class to startup application
  * Class Bootstrap
  * @package Pesapal
  */
-class Bootstrap {
+class Bootstrap
+{
     protected $identityMap;
     /**
      * @var DirectCommandBus
@@ -33,18 +36,20 @@ class Bootstrap {
 
     function __construct()
     {
-        if(!isset(self::$bootstrap)){
+        if (!isset(self::$bootstrap)) {
             $this->run();
-            self::$bootstrap=$this;
+            self::$bootstrap = $this;
         }
         return self::$bootstrap;
     }
 
-    protected function run(){
-        $this->commandBus=new DirectCommandBus();
+    protected function run()
+    {
+        $this->commandBus = new DirectCommandBus();
         $this->registerNativeBindings();
 
     }
+
     /**
      * @return DirectCommandBus
      */
@@ -52,6 +57,7 @@ class Bootstrap {
     {
         return $this->commandBus;
     }
+
     /**
      *
      */
@@ -60,9 +66,26 @@ class Bootstrap {
         return new Dispatcher();
     }
 
-    protected function registerNativeBindings(){
-        $service= new \Pesapal\Services\IframeGenerator();
-        $this->getCommandBus()->register(GenerateIframe::class,$service);
+    protected function registerNativeBindings()
+    {
+        $service = new \Pesapal\Services\IframeGenerator();
+        $this->getCommandBus()->register(GenerateIframe::class, $service);
+    }
+
+    function addPaymentListeners(array $listeners)
+    {
+        foreach ($listeners as $listener) {
+            PaymentBroadcast::make()->addListener($listener);
+        }
+    }
+    function addIframeListeners(array $listeners){
+        foreach ($listeners as $listener) {
+            IframeBroadcast::make()->addListener($listener);
+        }
+    }
+    function addListeners(Config $config){
+        $this->addIframeListeners($config->getIframeListeners());
+        $this->addPaymentListeners($config->getIpnListeners());
     }
 
 

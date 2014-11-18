@@ -24,18 +24,19 @@ class Config
      * @var DemoStatus
      */
     protected $demo;
+
     /**
      * @var DemoStatus
      */
-    private $demoStatus;
+    protected $demoStatus;
     /**
      * @var array
      */
-    private $iframe_listeners;
+    protected $iframe_listeners;
     /**
      * @var array
      */
-    private $ipn_listeners;
+    protected $ipn_listeners;
 
     /**
      * @param Credentials $credentials
@@ -72,5 +73,46 @@ class Config
             Assertion::isInstanceOf($ipn_listener, PaymentListener::class);
         }
     }
+
+    /**
+     * @return Credentials
+     */
+    public function getCredentials()
+    {
+        return $this->credentials;
+    }
+
+    /**
+     * @return DemoStatus
+     */
+    public function getDemo()
+    {
+        return $this->demo;
+    }
+
+    /**
+     * @return DemoStatus
+     */
+    public function getDemoStatus()
+    {
+        return $this->demoStatus;
+    }
+
+    /**
+     * @return array
+     */
+    public function getIframeListeners()
+    {
+        return $this->iframe_listeners;
+    }
+
+    /**
+     * @return array
+     */
+    public function getIpnListeners()
+    {
+        return $this->ipn_listeners;
+    }
+
 
 } 
