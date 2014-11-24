@@ -7,6 +7,7 @@
  */
 
 namespace Pesapal\Entities;
+use Assert\Assertion;
 class Order
 {
     public $reference; //Must be unique
@@ -28,6 +29,10 @@ class Order
         $this->phonenumber = $phonenumber;
         $this->reference = $reference;
         $this->type = $type;
+        $this->_validateAmountIsNumeric();
+    }
+    function _validateAmountIsNumeric(){
+        Assertion::integerish($this->amount);
     }
 
 
