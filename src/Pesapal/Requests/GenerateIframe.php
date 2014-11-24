@@ -15,14 +15,9 @@ class GenerateIframe extends DefaultCommand
 {
     public  $order;
     public $response;
-    /**
-     * @var Config
-     */
-    public $config;
 
-    function __construct(Order $order, Config $config)
+    function __construct(Order $order)
     {
         $this->order = $order;
-        $this->config = $config;
     }
 } 

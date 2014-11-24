@@ -10,7 +10,8 @@
         "phpspec/phpspec": "~2.0",
         "beberlei/lite-cqrs": "~1.1",
         "laracasts/commander": "1.3.10",
-        "beberlei/assert": "~2.1"
+        "beberlei/assert": "~2.1",
+        "mnapoli/php-di": "~4.4"
     },
     "require-dev":{
         "fzaninotto/faker": "~1.4",

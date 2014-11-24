@@ -24,7 +24,8 @@ class ConfigSpec extends ObjectBehavior
         $demoStatus->beAdoubleOf(DemoStatus::class);
         $iframe_listeners = [$IFrameListener];
         $ipn_listeners = [$paymentListener];
-        $this->beConstructedWith($credentials, $demoStatus, $iframe_listeners, $ipn_listeners);
+        $callback_url="";
+        $this->beConstructedWith($credentials, $demoStatus, $iframe_listeners, $ipn_listeners,$callback_url);
 
     }
 
@@ -34,8 +35,9 @@ class ConfigSpec extends ObjectBehavior
         $demoStatus->beAdoubleOf(DemoStatus::class);
         $iframe_listeners = [$paymentListener];
         $ipn_listeners = [$paymentListener];
+        $callback_url="";
         $this->shouldThrow(AssertionFailedException::class)->during('__construct',
-            [$credentials, $demoStatus, $iframe_listeners, $ipn_listeners]);
+            [$credentials, $demoStatus, $iframe_listeners, $ipn_listeners,$callback_url]);
     }
     function it_does_not_initialize_with_invalid_payment($credentials, $demoStatus, IFrameListener $IFrameListener)
     {
@@ -43,8 +45,9 @@ class ConfigSpec extends ObjectBehavior
         $demoStatus->beAdoubleOf(DemoStatus::class);
         $iframe_listeners = [$IFrameListener];
         $ipn_listeners = [new \stdClass()];
+        $callback_url="";
         $this->shouldThrow(AssertionFailedException::class)->during('__construct',
-            [$credentials, $demoStatus, $iframe_listeners, $ipn_listeners]);
+            [$credentials, $demoStatus, $iframe_listeners, $ipn_listeners,$callback_url]);
     }
 
 

@@ -13,6 +13,7 @@ use Pesapal\Values\Credentials;
 use Pesapal\Values\DemoStatus;
 use Pesapal\Contracts\IFrameListener;
 use Pesapal\Contracts\PaymentListener;
+use Pesapal\Values\IframeDimensions;
 
 class Config
 {
@@ -32,11 +33,16 @@ class Config
     /**
      * @var array
      */
-    protected $iframe_listeners;
+    protected $iframeListeners;
     /**
      * @var array
      */
-    protected $ipn_listeners;
+    protected $ipnListeners;
+    protected $callbackUrl;
+    /**
+     * @var IframeDimensions
+     */
+    protected $iframeDimensions;
 
     /**
      * @param Credentials $credentials
@@ -47,29 +53,33 @@ class Config
     function __construct(
         Credentials $credentials,
         DemoStatus $demoStatus,
+        IframeDimensions $iframeDimensions,
         array $iframe_listeners,
-        array $ipn_listeners
+        array $ipn_listeners,
+        $callback_url
     ) {
         $this->credentials = $credentials;
         $this->demoStatus = $demoStatus;
-        $this->iframe_listeners = $iframe_listeners;
-        $this->ipn_listeners = $ipn_listeners;
+        $this->iframeListeners = $iframe_listeners;
+        $this->ipnListeners = $ipn_listeners;
         $this->_validateIframeListeners();
         $this->_validateIpnListeners();
+        $this->callbackUrl = $callback_url;
+        $this->iframeDimensions = $iframeDimensions;
     }
 
     protected function _validateIframeListeners()
     {
-        Assertion::notEmpty($this->iframe_listeners);
-        foreach ($this->iframe_listeners as $iframe_listener) {
+        Assertion::notEmpty($this->iframeListeners);
+        foreach ($this->iframeListeners as $iframe_listener) {
             Assertion::isInstanceOf($iframe_listener, IFrameListener::class);
         }
     }
 
     protected function _validateIpnListeners()
     {
-        Assertion::notEmpty($this->ipn_listeners);
-        foreach ($this->ipn_listeners as $ipn_listener) {
+        Assertion::notEmpty($this->ipnListeners);
+        foreach ($this->ipnListeners as $ipn_listener) {
             Assertion::isInstanceOf($ipn_listener, PaymentListener::class);
         }
     }
@@ -87,7 +97,8 @@ class Config
      */
     public function getDemo()
     {
-        return $this->demo;
+
+        return $this->demoStatus;
     }
 
     /**
@@ -103,7 +114,7 @@ class Config
      */
     public function getIframeListeners()
     {
-        return $this->iframe_listeners;
+        return $this->iframeListeners;
     }
 
     /**
@@ -111,8 +122,23 @@ class Config
      */
     public function getIpnListeners()
     {
-        return $this->ipn_listeners;
+        return $this->ipnListeners;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCallbackUrl()
+    {
+        return $this->callbackUrl;
+    }
+    /**
+     * @return IframeDimensions $iframeDimensions
+     */
+    public function getIframeDimensions()
+    {
+        return $this->iframeDimensions;
     }
 
 
-} 
+}

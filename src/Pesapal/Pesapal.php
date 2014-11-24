@@ -9,6 +9,7 @@ namespace Pesapal;
 use Pesapal\Config;
 use Pesapal\Entities\Order;
 use Pesapal\Requests\GenerateIframe;
+use Pesapal\Container;
 
 class Pesapal
 {
@@ -18,13 +19,16 @@ class Pesapal
     protected $config;
     protected $bootstrap;
     protected static $instance;
+    protected $container;
 
     private function __construct(Config $config)
     {
         $this->config = $config;
-        $this->bootstrap=new \Pesapal\Bootstrap();
-        $this->bootstrap->addListeners($config);
 
+        Container::make()->run();
+        Container::make()->setConfig($config);
+        Container::make()->setBootstrap($config);
+        Container::make()->setOauthCredentials($config);
     }
 
 
@@ -39,7 +43,15 @@ class Pesapal
 
     function generateIframe(Order $order)
     {
-        $this->bootstrap->getCommandBus()->handle(new GenerateIframe($order,$this->config));
+        $commandBus=Container::make()->getContainer()->get('commandBus');
+        $commandBus->handle(new GenerateIframe($order));
+    }
+    /**
+     * @return \DI\Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 
     function ipn($data)

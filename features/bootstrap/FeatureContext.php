@@ -50,7 +50,8 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function iShouldGetIframeSrcIframe($arg1)
     {
 
-        $bootstrap=new \Pesapal\Bootstrap();;
+
+        $pesapal=\Pesapal\Pesapal::make($this->getConfig());
         $faker= Faker\Factory::create();
         $order= new Pesapal\Entities\Order(
             $faker->randomNumber(),
@@ -64,8 +65,21 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
 
         );
-        $bootstrap->getCommandBus()->handle(new GenerateIframe($order));
+        $pesapal->generateIframe($order);
 
 
+    }
+    function getConfig(){
+        $prophet=new Prophecy\Prophet();
+        $iframe_listener=$prophet->prophesize('Pesapal\Contracts\IFrameListener');
+        $ipn_listener=$prophet->prophesize('Pesapal\Contracts\PaymentListener');
+        $faker=\Faker\Factory::create();
+        $credentials= new \Pesapal\Values\Credentials($faker->word,$faker->word);
+        $demoStatus= new \Pesapal\Values\DemoStatus(true);
+        $iframe_listeners= [$iframe_listener->reveal()];
+        $ipn_listeners=[$ipn_listener->reveal()];
+        $callback_url="";
+        $config= new \Pesapal\Config($credentials,$demoStatus,$iframe_listeners,$ipn_listeners,$callback_url);
+        return $config;
     }
 }

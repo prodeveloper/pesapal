@@ -14,9 +14,18 @@ class DemoStatus {
     protected $demo_link="http://demo.pesapal.com/API/PostPesapalDirectOrderV4";
     protected $demo_mode;
 
-    function __construct($demo_link)
+    function __construct($demo_mode)
     {
-        $this->demo_link = $demo_link;
+        $this->demo_mode = $demo_mode;
+    }
+
+    function getLink(){
+        if($this->demo_mode){
+            return $this->demo_link;
+        }
+        else{
+            return $this->live_link;
+        }
     }
 
 

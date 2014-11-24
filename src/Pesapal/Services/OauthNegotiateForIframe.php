@@ -7,11 +7,13 @@
  */
 
 namespace Pesapal\Services;
-use Pesapal\Config;
+
 use Pesapal\Entities\Order;
 use Pesapal\Events\IframeGeneratedEvent;
 use Pesapal\Dispatcher\Raise;
-use OAuthConsumer;
+use OAuthRequest;
+use Pesapal\Events\InvalidIframeRequest;
+use Pesapal\Values\OauthCredentials;
 
 class OauthNegotiateForIframe
 {
@@ -23,30 +25,92 @@ class OauthNegotiateForIframe
     protected $xml;
     protected $consumer;
     /**
-     * @var Config
+     * @var OauthCredentials
      */
-    private $config;
+    protected $oauthCredentials;
+    protected $iframe_src;
+    protected $iframe;
 
-    function __construct(Order $order, Config $config)
+
+    /**
+     * @param Order $order
+     */
+    public function setOrder($order)
     {
         $this->order = $order;
-        $this->xml= (new XMLGenerator())->getXMLFromOrder($order);
-        $this->config = $config;
-        $this->_setConsumer();
-    }
-    protected function _setConsumer(){
-        $this->consumer=new OAuthConsumer(
-            $this->config->getCredentials()->consumer_key,
-            $this->config->getCredentials()->consumer_secret
-        );
     }
 
-
-    function getIframe()
+    /**
+     * @Inject
+     * @param OauthCredentials $oauthCredentials
+     */
+    public function setOauthCredentials($oauthCredentials)
     {
-
-
-       $event=new IframeGeneratedEvent($this->xml);
-        $this->raise($event);
+        $this->oauthCredentials = $oauthCredentials;
     }
-} 
+
+    /**
+     * @param Order $order
+     */
+    public function run(Order $order)
+    {
+        $this->xml = (new XMLGenerator())->getXMLFromOrder($order);
+        $this->_postTransaction();
+        $this->_formatRequest();
+        $this->_validateIframe();
+
+    }
+
+    protected function _postTransaction()
+    {
+        $iframe_src = OAuthRequest::from_consumer_and_token(
+            $this->oauthCredentials->getConsumer(),
+            $this->oauthCredentials->getToken(),
+            "GET",
+            $this->oauthCredentials->getLink()
+        );
+        $iframe_src->set_parameter(
+            "oauth_callback",
+            $this->oauthCredentials->getCallBackUrl()
+        );
+        $iframe_src->set_parameter("pesapal_request_data", $this->xml);
+        $iframe_src->sign_request(
+            $this->oauthCredentials->getSignatureMethod(),
+            $this->oauthCredentials->getConsumer(),
+            $this->oauthCredentials->getToken()
+        );
+        $this->iframe_src = $iframe_src;
+
+    }
+
+    protected function _formatRequest()
+    {
+        $format = '<iframe src="%s" width="%s" height="%s" scrolling="%s" frameBorder="%s"> <p>Unable to load the payment page</p> </iframe>';
+        $this->iframe = sprintf(
+            $format,
+            $this->iframe_src,
+            $this->oauthCredentials->getIframeDimensions()->getWidth(),
+            $this->oauthCredentials->getIframeDimensions()->getHeight(),
+            $this->oauthCredentials->getIframeDimensions()->getScrolling(),
+            $this->oauthCredentials->getIframeDimensions()->getFrameBorder()
+        );
+
+    }
+
+    protected function _validateIframe()
+    {
+        if (strpos($this->iframe, "Problem") !== false) {
+            throw new InvalidIframeRequest($this->iframe);
+        }
+    }
+
+    function getIframe(Order $order)
+    {
+        $this->run($order);
+        $event = new IframeGeneratedEvent($this->iframe);
+        $this->raise($event);
+
+    }
+
+
+}
