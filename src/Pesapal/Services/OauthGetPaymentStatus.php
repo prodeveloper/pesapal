@@ -70,23 +70,37 @@ class OauthGetPaymentStatus
     }
     function run()
     {
-
-        $request = $this->signedOauthRequest
-            ->initialize($this->demoStatus->getQueryLink())
-            ->set_parameter('pesapal_merchant_reference', $this->ipnData->getMerchantReference())
-            ->set_parameter('pesapal_transaction_tracking_id', $this->ipnData->getTrackingId())
-            ->getSigned();
-        $payment= new Payment($this->ipnData,$this->getPaymentStatusFromPesapal($request));
-        $event= new PaymentEvent($payment);
-        $this->raise($event);
-
-        $this->raise($event);
+        $request = $this->_prepareOauthRequest();
+        $this->_raisePaymentEvent($request);
 
     }
     protected function getPaymentStatusFromPesapal($request){
         $client= new Client();
         $response=$client->get($request)->send();
         return $pesapal_response=str_replace("pesapal_response_data=","",$response->getBody());
+    }
+
+    /**
+     * @param $request
+     */
+    protected function _raisePaymentEvent($request)
+    {
+        $payment = new Payment($this->ipnData, $this->getPaymentStatusFromPesapal($request));
+        $event = new PaymentEvent($payment);
+        $this->raise($event);
+    }
+
+    /**
+     * @return \OAuthRequest
+     */
+    protected function _prepareOauthRequest()
+    {
+        $request = $this->signedOauthRequest
+            ->initialize($this->demoStatus->getQueryLink())
+            ->set_parameter('pesapal_merchant_reference', $this->ipnData->getMerchantReference())
+            ->set_parameter('pesapal_transaction_tracking_id', $this->ipnData->getTrackingId())
+            ->getSigned();
+        return $request;
     }
 
 }

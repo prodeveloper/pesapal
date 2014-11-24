@@ -20,6 +20,5 @@ class PaymentBroadcast
     {
         $listener = new PaymentStatusDispatcher($listener);
         Dispatcher::make()->addListener(PaymentEvent::class, $listener);
-
     }
 } 
