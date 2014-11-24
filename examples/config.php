@@ -6,6 +6,11 @@ $credentials= new \Pesapal\Values\Credentials("vGJc0pEFutjIuqcLdOpLTqudHTnxLuUW"
 $demoStatus= new \Pesapal\Values\DemoStatus(true);
 $iframe_listeners= [new ShowIframe()];
 $ipn_listeners=[new SendThankYouEmail()];
-$iframeDimensions=new \Pesapal\Values\IframeDimensions();
+$iframeDimensions=new \Pesapal\Values\IframeDimensions(
+    $height="620px",
+    $width="500px",
+    $autoscrolling="no",
+    $iframeBorder=0
+);
 $callback_url="http://www.google.co.ke/";
 $config= new \Pesapal\Config($credentials,$demoStatus,$iframeDimensions,$iframe_listeners,$ipn_listeners,$callback_url);
