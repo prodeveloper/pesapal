@@ -14,6 +14,7 @@ use Pesapal\Dispatcher\Raise;
 use OAuthRequest;
 use Pesapal\Events\InvalidIframeRequest;
 use Pesapal\Values\OauthCredentials;
+use Pesapal\Services\SignedOauthRequest;
 
 class OauthNegotiateForIframe
 {
@@ -30,6 +31,19 @@ class OauthNegotiateForIframe
     protected $oauthCredentials;
     protected $iframe_src;
     protected $iframe;
+    /**
+     * @var SignedOauthRequest
+     */
+    protected $signedOauthRequest;
+
+    /**
+     * @Inject
+     * @param SignedOauthRequest $signedOauthRequest
+     */
+    public function setSignedOauthRequest(SignedOauthRequest $signedOauthRequest)
+    {
+        $this->signedOauthRequest = $signedOauthRequest;
+    }
 
 
     /**
@@ -63,23 +77,13 @@ class OauthNegotiateForIframe
 
     protected function _postTransaction()
     {
-        $iframe_src = OAuthRequest::from_consumer_and_token(
-            $this->oauthCredentials->getConsumer(),
-            $this->oauthCredentials->getToken(),
-            "GET",
-            $this->oauthCredentials->getLink()
-        );
-        $iframe_src->set_parameter(
-            "oauth_callback",
-            $this->oauthCredentials->getCallBackUrl()
-        );
-        $iframe_src->set_parameter("pesapal_request_data", $this->xml);
-        $iframe_src->sign_request(
-            $this->oauthCredentials->getSignatureMethod(),
-            $this->oauthCredentials->getConsumer(),
-            $this->oauthCredentials->getToken()
-        );
-        $this->iframe_src = $iframe_src;
+
+        $this->iframe_src=$this->signedOauthRequest->initialize()
+            ->set_parameter("oauth_callback",$this->oauthCredentials->getCallBackUrl()
+            )
+            ->set_parameter("pesapal_request_data",$this->xml)
+            ->getSigned();
+
 
     }
 

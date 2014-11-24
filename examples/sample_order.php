@@ -1,7 +1,7 @@
 <?php
 $faker= Faker\Factory::create();
 $order= new Pesapal\Entities\Order(
-    $faker->randomNumber(),
+    rand(10,1000),
     $faker->paragraph(),
     $faker->email,
     $faker->firstName,
