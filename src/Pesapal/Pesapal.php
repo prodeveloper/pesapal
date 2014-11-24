@@ -10,6 +10,8 @@ use Pesapal\Config;
 use Pesapal\Entities\Order;
 use Pesapal\Requests\GenerateIframe;
 use Pesapal\Container;
+use Pesapal\Services\UpdatePaymentStatus;
+use Pesapal\Values\IPNData;
 
 class Pesapal
 {
@@ -29,6 +31,7 @@ class Pesapal
         Container::make()->setConfig($config);
         Container::make()->setBootstrap($config);
         Container::make()->setOauthCredentials($config);
+        Container::make()->setDemoStatus($config);
     }
 
 
@@ -54,8 +57,10 @@ class Pesapal
         return $this->container;
     }
 
-    function ipn($data)
+    function ipn(IPNData $IPNData)
     {
+        $update= new UpdatePaymentStatus();
+        $update->doUpdate($IPNData);
 
     }
 

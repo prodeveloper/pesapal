@@ -14,6 +14,7 @@ use Pesapal\Services\SingletonMake;
 use Interop\Container\ContainerInterface;
 use Pesapal\Values\Credentials;
 use Pesapal\Values\OauthCredentials;
+use Pesapal\Values\DemoStatus;
 
 /**
  * Class Container
@@ -30,6 +31,7 @@ class Container
     protected $config;
     protected $bootstrap;
     protected $commandbus;
+
     /**
      * @var OauthCredentials
      */
@@ -46,34 +48,44 @@ class Container
         return $this->container;
 
     }
-    function run(){
+
+    function run()
+    {
         $builder = new \DI\ContainerBuilder();
         $this->container = $builder->build();
     }
+
     /**
      * @param Config
      */
     function setConfig(Config $config)
     {
-        $this->container->set('config',$config);
+        $this->container->set('config', $config);
     }
+
     /**
      * @param Config
      */
     public function setBootstrap(Config $config)
     {
-        $this->bootstrap=new \Pesapal\Bootstrap();
+        $this->bootstrap = new \Pesapal\Bootstrap();
         $this->bootstrap->addListeners($config);
-        $this->container->set("bootstrap",$this->bootstrap);
-        $this->container->set('commandBus',$this->bootstrap->getCommandBus());
+        $this->container->set("bootstrap", $this->bootstrap);
+        $this->container->set('commandBus', $this->bootstrap->getCommandBus());
     }
+
     /**
      * @param Config $config
      */
     public function setOauthCredentials(Config $config)
     {
         $this->oauthCredentials = new OauthCredentials($config);
-        $this->container->set(OauthCredentials::class,$this->oauthCredentials);
+        $this->container->set(OauthCredentials::class, $this->oauthCredentials);
+    }
+
+    public function setDemoStatus(Config $config)
+    {
+        $this->container->set(DemoStatus::class, $config->getDemo());
     }
 
 

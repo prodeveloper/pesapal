@@ -15,6 +15,7 @@ use OAuthRequest;
 use Pesapal\Events\InvalidIframeRequest;
 use Pesapal\Values\OauthCredentials;
 use Pesapal\Services\SignedOauthRequest;
+use Pesapal\Values\DemoStatus;
 
 class OauthNegotiateForIframe
 {
@@ -32,9 +33,22 @@ class OauthNegotiateForIframe
     protected $iframe_src;
     protected $iframe;
     /**
+     * @var DemoStatus
+     */
+    protected $demoStatus;
+    /**
      * @var SignedOauthRequest
      */
     protected $signedOauthRequest;
+
+    /**
+     * @Inject
+     * @param DemoStatus $demoStatus
+     */
+    public function setDemoStatus($demoStatus)
+    {
+        $this->demoStatus = $demoStatus;
+    }
 
     /**
      * @Inject
@@ -78,7 +92,8 @@ class OauthNegotiateForIframe
     protected function _postTransaction()
     {
 
-        $this->iframe_src=$this->signedOauthRequest->initialize()
+        $this->iframe_src=$this->signedOauthRequest
+            ->initialize($this->demoStatus->getLink())
             ->set_parameter("oauth_callback",$this->oauthCredentials->getCallBackUrl()
             )
             ->set_parameter("pesapal_request_data",$this->xml)

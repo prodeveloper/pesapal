@@ -9,9 +9,12 @@
 namespace Pesapal\Values;
 
 
-class DemoStatus {
-    protected $live_link="https://www.pesapal.com/api/PostPesapalDirectOrderV4";
-    protected $demo_link="http://demo.pesapal.com/API/PostPesapalDirectOrderV4";
+class DemoStatus
+{
+    protected $live_link = "https://www.pesapal.com/api/PostPesapalDirectOrderV4";
+    protected $demo_link = "http://demo.pesapal.com/API/PostPesapalDirectOrderV4";
+    protected $demo_query_link = "http://demo.pesapal.com/api/QueryPaymentStatus";
+    protected $live_query_link = "https://www.pesapal.com/API/QueryPaymentStatus";
     protected $demo_mode;
 
     function __construct($demo_mode)
@@ -19,12 +22,19 @@ class DemoStatus {
         $this->demo_mode = $demo_mode;
     }
 
-    function getLink(){
-        if($this->demo_mode){
+    function getLink()
+    {
+        if ($this->demo_mode) {
             return $this->demo_link;
-        }
-        else{
+        } else {
             return $this->live_link;
+        }
+    }
+    function getQueryLink(){
+        if ($this->demo_mode) {
+            return $this->demo_query_link;
+        } else {
+            return $this->live_query_link;
         }
     }
 

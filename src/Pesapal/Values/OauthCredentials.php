@@ -21,8 +21,6 @@ class OauthCredentials
      * @var OAuthConsumer
      */
     protected $consumer;
-
-    protected $link;
     /**
      * @var Config
      */
@@ -31,7 +29,6 @@ class OauthCredentials
     function __construct(Config $config)
     {
         $this->config = $config;
-        $this->link = $config->getDemo()->getLink();
         $this->_setConsumer();
     }
 
@@ -50,14 +47,6 @@ class OauthCredentials
     public function getConsumer()
     {
         return $this->consumer;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLink()
-    {
-        return $this->link;
     }
 
     public function getCallBackUrl()

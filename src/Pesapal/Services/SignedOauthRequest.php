@@ -35,13 +35,13 @@ class SignedOauthRequest
         $this->oauthCredentials = $oauthCredentials;
     }
 
-    function initialize()
+    function initialize($link)
     {
         $this->request = OAuthRequest::from_consumer_and_token(
             $this->oauthCredentials->getConsumer(),
             $this->oauthCredentials->getToken(),
             "GET",
-            $this->oauthCredentials->getLink()
+            $link
         );
         return $this;
     }
