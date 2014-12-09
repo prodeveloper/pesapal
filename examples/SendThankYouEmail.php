@@ -23,4 +23,9 @@ class SendThankYouEmail implements \Pesapal\Contracts\PaymentListener {
     {
         echo "Payment in progress " . $item->getIPNData()->getMerchantReference();
     }
+
+    public function invalid(\Pesapal\Entities\Payment $payment)
+    {
+        echo "Payment invalid " . $payment->getIPNData()->getMerchantReference();
+    }
 }

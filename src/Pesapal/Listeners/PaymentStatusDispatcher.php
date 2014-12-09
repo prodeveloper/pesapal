@@ -7,19 +7,21 @@
  */
 
 namespace Pesapal\Listeners;
+
 use BigName\EventDispatcher\Event;
 use BigName\EventDispatcher\Listener;
 use Pesapal\Events\IsAPaymentEvent;
 use Pesapal\Events\PaymentEvent;
 use Pesapal\Contracts\PaymentListener;
-class PaymentStatusDispatcher implements  Listener
+
+class PaymentStatusDispatcher implements Listener
 {
     protected $payment;
     protected $promise;
 
     function __construct(PaymentListener $promise)
     {
-       $this->setPromise($promise);
+        $this->setPromise($promise);
     }
 
     /**
@@ -39,28 +41,44 @@ class PaymentStatusDispatcher implements  Listener
         $this->whenSuccessfulPayment($event);
         $this->whenPaymentFailed($event);
         $this->whenProgressUpdate($event);
+        $this->whenInvalidPayment($event);
 
     }
 
 
-    function whenSuccessfulPayment(IsAPaymentEvent $event){
-        if($this->isEventStatus($event,"COMPLETED")){
+    function whenSuccessfulPayment(IsAPaymentEvent $event)
+    {
+        if ($this->isEventStatus($event, "COMPLETED")) {
             $this->promise->paid($event->getPayment());
         }
     }
-    function whenPaymentFailed(IsAPaymentEvent $event){
-        if($this->isEventStatus($event,"FAILED") ||$this->isEventStatus($event,"INVALID") ){
+
+    function whenPaymentFailed(IsAPaymentEvent $event)
+    {
+        if ($this->isEventStatus($event, "FAILED")) {
             $this->promise->failed($event->getPayment());
         }
     }
-    function whenProgressUpdate(IsAPaymentEvent $event){
-        if($this->isEventStatus($event,"PROGRESS")){
+
+    function whenInvalidPayment(IsAPaymentEvent $event)
+    {
+        if ($this->isEventStatus($event, "INVALID")) {
+            $this->promise->invalid($event->getPayment());
+        }
+    }
+
+    function whenProgressUpdate(IsAPaymentEvent $event)
+    {
+        if ($this->isEventStatus($event, "PROGRESS")) {
             $this->promise->inProgress($event->getPayment());
         }
     }
-    function isEventStatus(IsAPaymentEvent $event,$status){
-        return $event->getStatus()==$status;
+
+    function isEventStatus(IsAPaymentEvent $event, $status)
+    {
+        return $event->getStatus() == $status;
     }
+
     /**
      * @return PaymentListener
      */
@@ -68,8 +86,6 @@ class PaymentStatusDispatcher implements  Listener
     {
         return $this->promise;
     }
-
-
 
 
 }

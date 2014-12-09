@@ -12,9 +12,11 @@ use Pesapal\Entities\Payment;
 interface PaymentListener
 {
 
-    public function paid(Payment $IPNData);
+    public function paid(Payment $payment);
 
-    public function failed(Payment $IPNData);
+    public function failed(Payment $payment);
 
-    public function inProgress(Payment $IPNData);
+    public function invalid(Payment $payment);
+
+    public function inProgress(Payment $payment);
 } 
