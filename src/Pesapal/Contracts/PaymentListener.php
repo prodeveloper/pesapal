@@ -7,14 +7,14 @@
  */
 
 namespace Pesapal\Contracts;
-
+use Pesapal\Entities\Payment;
 
 interface PaymentListener
 {
 
-    public function paid();
+    public function paid(Payment $IPNData);
 
-    public function failed();
+    public function failed(Payment $IPNData);
 
-    public function inProgress();
+    public function inProgress(Payment $IPNData);
 } 

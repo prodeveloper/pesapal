@@ -22,4 +22,21 @@ class Payment {
         $this->IPNData = $IPNData;
     }
 
+    /**
+     * @return IPNData
+     */
+    public function getIPNData()
+    {
+        return $this->IPNData;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+
 } 

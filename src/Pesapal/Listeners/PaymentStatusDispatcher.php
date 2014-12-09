@@ -45,17 +45,17 @@ class PaymentStatusDispatcher implements  Listener
 
     function whenSuccessfulPayment(IsAPaymentEvent $event){
         if($this->isEventStatus($event,"COMPLETED")){
-            $this->promise->paid();
+            $this->promise->paid($event->getPayment());
         }
     }
     function whenPaymentFailed(IsAPaymentEvent $event){
         if($this->isEventStatus($event,"FAILED") ||$this->isEventStatus($event,"INVALID") ){
-            $this->promise->failed();
+            $this->promise->failed($event->getPayment());
         }
     }
     function whenProgressUpdate(IsAPaymentEvent $event){
         if($this->isEventStatus($event,"PROGRESS")){
-            $this->promise->inProgress();
+            $this->promise->inProgress($event->getPayment());
         }
     }
     function isEventStatus(IsAPaymentEvent $event,$status){
