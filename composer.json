@@ -5,6 +5,7 @@
     "author":"Chencha Jacob",
     "minimum-stability":"alpha",
     "license": "MIT",
+    "version":"0.1.0",
     "require": {
         "heybigname/event-dispatcher": "~1.1",
         "phpspec/phpspec": "~2.0",
