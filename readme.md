@@ -83,23 +83,21 @@ The listener must impliment
 
 A sample listener would be as follows
 
-    <?php
-    
     class SendThankYouEmail implements \Pesapal\Contracts\PaymentListener {
     
-        public function paid()
+        public function paid(\Pesapal\Entities\Payment $item)
         {
-            echo "Thank you for payment";
+            echo "Thank you for payment " . $item->getIPNData()->getMerchantReference();
         }
     
-        public function failed()
+        public function failed(\Pesapal\Entities\Payment $item)
         {
-            echo "Payment failed";
+            echo "Payment failed " . $item->getIPNData()->getMerchantReference();
         }
     
-        public function inProgress()
+        public function inProgress(\Pesapal\Entities\Payment $item)
         {
-            echo "Payment in progress";
+            echo "Payment in progress " . $item->getIPNData()->getMerchantReference();
         }
     }
 
@@ -160,3 +158,8 @@ That's it, now when a new IPN comes in, the relevant method (paid, failed, inPro
 ##Examples
 
 To see the code above in practise, please check out the example files
+
+
+##Gotchas
+
+During installation you may likely encounter issues with version compatibility. This is because one of the libraries utilized by the application is still in alpha. Working on a workaround
