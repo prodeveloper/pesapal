@@ -155,6 +155,13 @@ You must put the IPN class where you respond to the callback class previously pr
 
 That's it, now when a new IPN comes in, the relevant method (paid, failed, inProgress) on all payment status listeners will be called.
 
+##Confirming payments manually
+You can confirm your payments by merchant reference. Note this would not work if your references are not unique.
+
+    $pesapal=\Pesapal\Pesapal::make($config);
+    $merchant_ref='54a3';
+    $result=$pesapal->queryStatus($merchant_ref);
+    
 ##Examples
 
 To see the code above in practise, please check out the example files

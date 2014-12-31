@@ -6,12 +6,14 @@
  * Time: 10:35
  */
 namespace Pesapal;
+
 use Pesapal\Config;
 use Pesapal\Entities\Order;
 use Pesapal\Requests\GenerateIframe;
 use Pesapal\Container;
 use Pesapal\Services\UpdatePaymentStatus;
 use Pesapal\Values\IPNData;
+use Pesapal\Services\QueryPaymentStatus;
 
 class Pesapal
 {
@@ -46,9 +48,10 @@ class Pesapal
 
     function generateIframe(Order $order)
     {
-        $commandBus=Container::make()->getContainer()->get('commandBus');
+        $commandBus = Container::make()->getContainer()->get('commandBus');
         $commandBus->handle(new GenerateIframe($order));
     }
+
     /**
      * @return \DI\Container
      */
@@ -59,9 +62,14 @@ class Pesapal
 
     function ipn(IPNData $IPNData)
     {
-        $update= new UpdatePaymentStatus();
+        $update = new UpdatePaymentStatus();
         $update->doUpdate($IPNData);
+    }
 
+    function queryStatus($merchant_reference)
+    {
+        $query = Container::make()->getContainer()->make(QueryPaymentStatus::class);
+        return $query->run($merchant_reference);
     }
 
 
